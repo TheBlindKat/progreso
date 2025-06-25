@@ -17,6 +17,25 @@ public interface PaginaRepository extends JpaRepository<Pagina, Long> {
             """)
     List<Object[]> findUsuarioPaginas();
 
+    @Query("""
+            SELECT p.nombrePagina, p.usuario.nombres, p.plantilla.nombrePlantilla
+            FROM Pagina p
+            """)
+    List<Object[]> findUsuarioPlantillaConNombrePagina();
+
+    @Query("""
+            SELECT p.nombrePagina, p.usuario.nombres, p.plantilla.color
+            FROM Pagina p
+            """)
+    List<Object[]> findNombrePaginaYUsuarioYColorPlantilla();
+
+    @Query("""
+                SELECT p.nombrePagina, p.fechaCreacion, p.usuario.nombres
+                FROM Pagina p
+                WHERE p.fechaCreacion > :fecha
+            """)
+    List<Object[]> findPaginasCreadasEnFecha(java.time.LocalDate fecha);
+
     List<Pagina> findByUsuarioId(Long usuarioId);
 
     List<Pagina> findByPlantillaId(Long plantillaId);
