@@ -38,17 +38,29 @@ public class PlantillaService {
     }
 
     public void delete(Long id) {
-
         Plantilla plantilla = plantillaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Plantilla no encontrada"));
-        // plantillaRepository.deleteById(id);
-        List<Pagina> paginas = paginaRepository.findByPlantillaId(id);
 
+        List<Pagina> paginas = paginaRepository.findByPlantillaId(id);
         for (Pagina pagina : paginas) {
             paginaService.delete(Long.valueOf(pagina.getId()));
         }
+
         plantillaRepository.delete(plantilla);
     }
+
+    /*
+     * Plantilla plantilla = plantillaRepository.findById(id)
+     * .orElseThrow(() -> new RuntimeException("Plantilla no encontrada"));
+     * // plantillaRepository.deleteById(id);
+     * List<Pagina> paginas = paginaRepository.findByPlantillaId(id);
+     * 
+     * for (Pagina pagina : paginas) {
+     * paginaService.delete(Long.valueOf(pagina.getId()));
+     * }
+     * plantillaRepository.delete(plantilla);
+     * }
+     */
 
     public Plantilla updatePlantilla(Long id, Plantilla plantilla) {
         Plantilla plantillaToUpdate = plantillaRepository.findById(id).orElse(null);

@@ -42,7 +42,9 @@ public class PaginaService {
     }
 
     public void delete(Long id) {
-        paginaRepository.deleteById(id);
+        Pagina pagina = paginaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Página no encontrada"));
+        paginaRepository.delete(pagina);
     }
 
     public Pagina updatePagina(Long id, Pagina pagina) {

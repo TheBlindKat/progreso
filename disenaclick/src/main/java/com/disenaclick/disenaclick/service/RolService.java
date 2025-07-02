@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.disenaclick.disenaclick.model.Rol;
+import com.disenaclick.disenaclick.model.Usuario;
 import com.disenaclick.disenaclick.repository.RolRepository;
+import com.disenaclick.disenaclick.repository.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -17,6 +19,12 @@ public class RolService {
 
     @Autowired
     private RolRepository rolRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     public List<Rol> findAll() {
         return rolRepository.findAll();
@@ -31,7 +39,13 @@ public class RolService {
     }
 
     public void delete(Long id) {
-        rolRepository.deleteById(id);
+        Rol rol = rolRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+        List<Usuario> usuarios = usuarioRepository.findByRol(rol);
+        for (Usuario usuario : usuarios) {
+            usuarioService.delete(Long.valueOf(usuario.getId()));
+        }
+        rolRepository.delete(rol);
     }
 
     public Rol updateRol(Long id, Rol rol) {

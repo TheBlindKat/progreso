@@ -30,11 +30,9 @@ public class CategoriaService {
 
     public void delete(Long id) {
 
-        /*
-         * Categoria categoria = categoriaRepository.findById(id)
-         * .orElseThrow(() -> new RuntimeException("Categoria no encontrada"));
-         */
-        categoriaRepository.deleteById(id);
+        Categoria categoria = categoriaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Categoria no encontrada"));
+        categoriaRepository.delete(categoria);
 
     }
 

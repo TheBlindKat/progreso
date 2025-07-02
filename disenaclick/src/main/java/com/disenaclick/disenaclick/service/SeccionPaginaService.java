@@ -30,7 +30,9 @@ public class SeccionPaginaService {
     }
 
     public void delete(Long id) {
-        seccionPaginaRepository.deleteById(id);
+        SeccionPagina seccionPagina = seccionPaginaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Sección de página no encontrada"));
+        seccionPaginaRepository.delete(seccionPagina);
     }
 
     public SeccionPagina updateSeccionPagina(Long id, SeccionPagina seccionPagina) {
